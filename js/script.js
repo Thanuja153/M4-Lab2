@@ -1,75 +1,56 @@
-// CREATE AN ARRAY OF EMPLOYEES
-let arrEmployees = [
-    [23423424, "Zak Ruvalcaba", 4233, "zak@vectacorp.com", "Executive"],
-    [43414112, "Sally Smith", 3433, "sally@vectacorp.com", "Administrative"],
-    [89678967, "Mark Martin", 7877, "mark@vectacorp.com", "Sales"],
-    [23462454, "Robin Banks", 3432, "robin@vectacorp.com", "Marketing"],
-    [23455424, "Sue Wedge", 5245, "sue@vectacorp.com", "Quality Assurance"]
-]
+/*eslint-env browser*/
 
-// CHECK TO SEE IF STORAGE OBJECT EXISTS WHEN THE PAGE LOADS
-// IF DOES, RETURN STORAGE OBJECT INTO ARRAY INSTEAD OF POPULATED ARRAY
+//Employee Array
+const EmployeesArray = [[90909015, "Thanuja Pavani Satti", 1423, "tps@gmail.com", "Executive"],
+    [99089768, "Satya Uday Sanku", 3183, "sus@gmail.com", "Administrative"],
+    [98709875, "Puneet Patil", 7947, "pp@vectagmail.com", "Sales"],
+    [93456547, "Preeti Kulkarni", 6548, "pk@gmail.com", "Marketing"],
+    [90908989, "Nikitha Raavi", 1205, "nr@vgmail.com", "Quality Assurance"]];
+
+//Storing Data
 if (localStorage.getItem('employees') !== null) {
-    arrEmployees = JSON.parse(localStorage.getItem('employees'))
+    EmployeesArray = JSON.parse(localStorage.getItem('employees'));
 }
 
-// GET DOM ELEMENTS
-let form        = document.getElementById('addForm')
-let empTable    = document.getElementById('empTable')
-let empCount    = document.getElementById('empCount')
+const addform       = document.getElementById('addForm');
+const empTable    = document.getElementById('empTable');
+const empCount    = document.getElementById('empCount');
+Gridbuilding()
 
-// BUILD THE EMPLOYEES TABLE WHEN THE PAGE LOADS
-buildGrid()
-
-// ADD EMPLOYEE
-form.addEventListener('submit', (e) => {
-    // PREVENT FORM SUBMISSION
-    e.preventDefault()
-    // GET THE VALUES FROM THE TEXT BOXES
-    let empID       = parseInt(document.getElementById('id').value)
-    let empName     = document.getElementById('name').value
-    let empExt      = parseInt(document.getElementById('extension').value)
-    let empEmail    = document.getElementById('email').value
-    let empDept     = document.getElementById('department').value
-    // ADD THE NEW EMPLOYEE TO A NEW ARRAY OBJECT
-    let arrNewEmployee = [empID, empName, empExt, empEmail, empDept]
-    // PUSH THE NEW ARRAY TO THE *EXISTING* EMPLOYEES ARRAY
-    arrEmployees.push(arrNewEmployee)
-    // BUILD THE GRID
-    buildGrid()
-    // RESET THE FORM
-    form.reset()
-    // SET FOCUS BACK TO THE ID TEXT BOX
-    form.id.focus()
+// Adding Data
+addform.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const empID       = parseInt(document.getElementById('id').value);
+    const empName     = document.getElementById('name').value;
+    const empExt      = parseInt(document.getElementById('extension').value);
+    const empEmail    = document.getElementById('email').value;
+    const empDept     = document.getElementById('department').value;
+    const arrNewEmployee = [empID, empName, empExt, empEmail, empDept];
+    EmployeesArray.push(arrNewEmployee);
+    buildGrid();
+    addform.reset();
+    addform.id.focus();
 })
 
-// DELETE EMPLOYEElo
+//Removing Data
 empTable.addEventListener('click', (e) => {
     if (e.target.classList.contains('delete')) {
-        // CONFIRM THE DELETE
-        if (confirm('Are you sure you want to delete this employee?')) {
-            // GET THE SELECTED ROWINDEX FOR THE TR (PARENTNODE.PARENTNODE)
-            let rowIndex = e.target.parentNode.parentNode.rowIndex
-            // REMOVE EMPLOYEE FROM ARRAY
-            arrEmployees.splice(rowIndex - 1, 1)
-            // BUILD THE GRID
-            buildGrid()
+        if (confirm('Please confirm that you want to delete this employee from the system?')) {
+            const rowIndex = e.target.parentNode.parentNode.rowIndex
+            EmployeesArray.splice(rowIndex - 1, 1);
+            Gridbuilding();
         }
     }
-})
+});
 
-// BUILD THE EMPLOYEES GRID
-function buildGrid() {
-    // REMOVE THE EXISTING SET OF ROWS BY REMOVING THE ENTIRE TBODY SECTION
+// Building the Grid
+
+function Gridbuilding() {
     empTable.lastElementChild.remove()
-    // REBUILD THE TBODY FROM SCRATCH
-    let tbody = document.createElement('tbody')
-    // LOOP THROUGH THE ARRAY OF EMPLOYEES
-    // REBUILDING THE ROW STRUCTURE
-    for (let employee of arrEmployees) {
+    const tbody = document.createElement('tbody')
+    for (const employee of EmployeesArray) {
         tbody.innerHTML += 
-        `
-        <tr>
+        `<tr>
             <td>${employee[0]}</td>
             <td>${employee[1]}</td>
             <td>${employee[2]}</td>
@@ -77,12 +58,11 @@ function buildGrid() {
             <td>${employee[4]}</td>
             <td><button class="btn btn-sm btn-danger delete">X</button></td>
         </tr>
-        `
-    }
-    // BIND THE TBODY TO THE EMPLOYEE TABLE
-    empTable.appendChild(tbody)
-    // UPDATE EMPLOYEE COUNT
-    empCount.value = `(${arrEmployees.length})`
-    // STORE THE ARRAY IN STORAGE
-    localStorage.setItem('employees', JSON.stringify(arrEmployees))
+        `}
+empTable.appendChild(tbody);
+empCount.value = `(${EmployeesArray.length})`;
+
+//Storing Data
+    
+localStorage.setItem('employees', JSON.stringify(EmployeesArray));
 }
