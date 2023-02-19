@@ -1,54 +1,54 @@
 /*eslint-env browser*/
 
 //Employee Array
-const EmployeesArray = [[90909015, "Thanuja Pavani Satti", 1423, "tps@gmail.com", "Executive"],
+let EmployeesArray = [[90909015, "Thanuja Pavani Satti", 1423, "tps@gmail.com", "Executive"],
     [99089768, "Satya Uday Sanku", 3183, "sus@gmail.com", "Administrative"],
     [98709875, "Puneet Patil", 7947, "pp@vectagmail.com", "Sales"],
     [93456547, "Preeti Kulkarni", 6548, "pk@gmail.com", "Marketing"],
-    [90908989, "Nikitha Raavi", 1205, "nr@vgmail.com", "Quality Assurance"]];
+    [90908989, "Nikitha Raavi", 1205, "nr@vgmail.com", "Quality Assurance"]]
 
 //Storing Data
 if (localStorage.getItem('employees') !== null) {
-    EmployeesArray = JSON.parse(localStorage.getItem('employees'));
+    EmployeesArray = JSON.parse(localStorage.getItem('employees'))
 }
 
-const addform       = document.getElementById('addForm');
-const empTable    = document.getElementById('empTable');
-const empCount    = document.getElementById('empCount');
+let addform       = document.getElementById('addForm')
+let empTable    = document.getElementById('empTable')
+let empCount    = document.getElementById('empCount')
 Gridbuilding()
 
 // Adding Data
 addform.addEventListener('submit', (e) => {
     e.preventDefault();
-    const empID       = parseInt(document.getElementById('id').value);
-    const empName     = document.getElementById('name').value;
-    const empExt      = parseInt(document.getElementById('extension').value);
-    const empEmail    = document.getElementById('email').value;
-    const empDept     = document.getElementById('department').value;
-    const arrNewEmployee = [empID, empName, empExt, empEmail, empDept];
-    EmployeesArray.push(arrNewEmployee);
-    buildGrid();
-    addform.reset();
-    addform.id.focus();
+    let empID       = parseInt(document.getElementById('id').value)
+    let empName     = document.getElementById('name').value
+    let empExt      = parseInt(document.getElementById('extension').value)
+    let empEmail    = document.getElementById('email').value
+    let empDept     = document.getElementById('department').value
+    let arrNewEmployee = [empID, empName, empExt, empEmail, empDept]
+    EmployeesArray.push(arrNewEmployee)
+    Gridbuilding()
+    addform.reset()
+    addform.id.focus()
 })
 
 //Removing Data
 empTable.addEventListener('click', (e) => {
     if (e.target.classList.contains('delete')) {
         if (confirm('Please confirm that you want to delete this employee from the system?')) {
-            const rowIndex = e.target.parentNode.parentNode.rowIndex
-            EmployeesArray.splice(rowIndex - 1, 1);
-            Gridbuilding();
+            let rowIndex = e.target.parentNode.parentNode.rowIndex
+            EmployeesArray.splice(rowIndex - 1, 1)
+            Gridbuilding()
         }
     }
-});
+})
 
 // Building the Grid
 
 function Gridbuilding() {
     empTable.lastElementChild.remove()
-    const tbody = document.createElement('tbody')
-    for (const employee of EmployeesArray) {
+    let tbody = document.createElement('tbody')
+    for (let employee of EmployeesArray) {
         tbody.innerHTML += 
         `<tr>
             <td>${employee[0]}</td>
@@ -60,9 +60,9 @@ function Gridbuilding() {
         </tr>
         `}
 empTable.appendChild(tbody);
-empCount.value = `(${EmployeesArray.length})`;
+empCount.value = `(${EmployeesArray.length})`
 
 //Storing Data
     
-localStorage.setItem('employees', JSON.stringify(EmployeesArray));
+localStorage.setItem('employees', JSON.stringify(EmployeesArray))
 }
